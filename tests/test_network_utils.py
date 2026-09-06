@@ -1,7 +1,7 @@
 import unittest
 
 from src.network_utils import analyze_ip
-
+from src.network_utils import scan_network
 
 class TestNetworkUtils(unittest.TestCase):
 
@@ -29,6 +29,13 @@ class TestNetworkUtils(unittest.TestCase):
     def test_invalid_ip(self):
         with self.assertRaises(ValueError):
             analyze_ip("999.999.999.999")
+
+    def test_scan_network(self):
+        results = scan_network("192.168.1.0/30")
+
+        self.assertEqual(len(results), 2)
+        self.assertIn("192.168.1.1", results)
+        self.assertIn("192.168.1.2", results)
 
 
 if __name__ == "__main__":
