@@ -1,5 +1,4 @@
-from network_utils import analyze_ip, scan_network
-
+from network_utils import analyze_ip, scan_network, discover_devices
 
 def show_menu():
     print("\n================================")
@@ -7,8 +6,8 @@ def show_menu():
     print("================================")
     print("1. Analyze IP")
     print("2. Scan Network")
-    print("3. Exit")
-
+    print("3. Discover Devices")
+    print("4. Exit")
 
 def analyze_ip_option():
     ip = input("\nEnter an IP address: ")
@@ -51,10 +50,35 @@ def main():
         elif option == "2":
             scan_network_option()
         elif option == "3":
+            discover_devices_option()
+        elif option == "4":
             print("\nExiting...")
             break
         else:
             print("\nInvalid option.")
+
+def discover_devices_option():
+    network = input("\nEnter network (CIDR): ")
+    try:
+        devices = discover_devices(network)
+        print("\nDiscovered devices")
+        print("-------------------")
+
+        if not devices:
+            print("No devices found.")
+            return
+
+        for device in devices:
+            print(
+                f"{device['ip']:<16} "
+                f"{device['status']:<8} "
+                f"{device['hostname']}"
+            )
+
+    except ValueError:
+        print("Invalid network.")
+
+
 
 
 if __name__ == "__main__":

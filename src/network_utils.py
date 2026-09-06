@@ -1,5 +1,7 @@
 import ipaddress
 import subprocess
+import socket
+
 
 def analyze_ip(ip_address):
     ip = ipaddress.ip_address(ip_address)
@@ -32,3 +34,22 @@ def scan_network(network):
     for host in hosts:
         results[host] = ping_host(host)
     return results
+
+def get_hostname(ip_address):
+    try:
+        hostname = socket.gethostbyaddr(ip_address)[0]
+        return hostname
+    except socket.herror:
+        return None
+
+def discover_devices(network):
+    hosts = get_network_hosts(network)
+    devices = []
+    for host in hosts:
+        if ping_host(host):
+            devices.append({
+                "ip": host,
+                "status": "UP",
+                "hostname": get_hostname(host)
+            })
+    return devices 

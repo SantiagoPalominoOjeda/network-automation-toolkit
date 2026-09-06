@@ -2,6 +2,7 @@ import unittest
 
 from src.network_utils import analyze_ip
 from src.network_utils import scan_network
+from src.network_utils import discover_devices
 
 class TestNetworkUtils(unittest.TestCase):
 
@@ -37,6 +38,13 @@ class TestNetworkUtils(unittest.TestCase):
         self.assertIn("192.168.1.1", results)
         self.assertIn("192.168.1.2", results)
 
+    def test_discover_devices(self):
+        results = discover_devices("8.8.8.8/32")
+
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["ip"], "8.8.8.8")
+        self.assertEqual(results[0]["status"], "UP")
+        self.assertEqual(results[0]["hostname"], "dns.google")
 
 if __name__ == "__main__":
     unittest.main()
